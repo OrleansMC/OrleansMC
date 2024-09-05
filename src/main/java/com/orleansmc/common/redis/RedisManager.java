@@ -142,6 +142,27 @@ public class RedisManager implements RedisProvider {
         }
     }
 
+    @Override
+    public void set(String key, String value) {
+        try (Jedis jedis = getJedis()) {
+            jedis.set(key, value);
+        }
+    }
+
+    @Override
+    public String get(String key) {
+        try (Jedis jedis = getJedis()) {
+            return jedis.get(key);
+        }
+    }
+
+    @Override
+    public void delete(String key) {
+        try (Jedis jedis = getJedis()) {
+            jedis.del(key);
+        }
+    }
+
     private final class PubSubListener extends BinaryJedisPubSub {
         @Override
         public void onUnsubscribe(byte[] channel, int subscribedChannels) {

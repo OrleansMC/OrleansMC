@@ -5,6 +5,7 @@ import java.util.HashMap;
 public interface ServersProvider {
     public void updateServerState(ServerState serverState);
     public void sendServerState();
+    public ServerState getAnyServer();
     public HashMap<String, ServerState> getServerStates();
     public void switchServer(String playerName, String serverName);
 }

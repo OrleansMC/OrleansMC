@@ -24,6 +24,7 @@ import java.awt.*;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 public class CustomJoinCommands implements Listener {
@@ -68,12 +69,32 @@ public class CustomJoinCommands implements Listener {
                 }
         );
 
+        HashMap<String, String> joinSounds = new HashMap<>();
+        joinSounds.put("Mızrak Sesi", "minecraft:item.trident.thunder");
+        joinSounds.put("Kötü Şans Sesi", "minecraft:event.mob_effect.bad_omen");
+        joinSounds.put("Baskın Sesi", "minecraft:event.mob_effect.raid_omen");
+        joinSounds.put("Kılıç Sesi", "minecraft:tugkandeman.ent_slash3");
+        joinSounds.put("Amethyst Bloğu Sesi", "minecraft:block.amethyst_block.fall");
+        joinSounds.put("Örs Düşüşü Sesi", "minecraft:block.anvil.land");
+        joinSounds.put("Kasa Açılış Sesi", "minecraft:block.vault.open_shutter");
+        joinSounds.put("Uğursuz Eşya Sesi", "minecraft:block.trial_spawner.about_to_spawn_item");
+        joinSounds.put("Kehanet Çağrısı Sesi", "minecraft:block.trial_spawner.charge_activate");
+        joinSounds.put("End Portalı Sesi", "minecraft:block.end_portal.spawn");
+        joinSounds.put("Ender Gözü Sesi", "minecraft:block.end_portal_frame.fill");
+        joinSounds.put("Dirilme Sesi", "minecraft:block.respawn_anchor.charge");
+        joinSounds.put("Diriliş Sesi", "minecraft:block.respawn_anchor.set_spawn");
+        joinSounds.put("Diriliş Bitiş Sesi", "minecraft:block.respawn_anchor.deplete");
+
         Commands.create()
                 .assertPlayer()
-                .tabHandler(c -> Arrays.stream(Sound.values())
-                        .map(Enum::name)
-                        .filter(s -> s.toLowerCase().startsWith(c.args().get(0).toLowerCase()))
-                        .toList())
+                .tabHandler(c -> {
+                    if (c.args().size() == 1) {
+                        return new ArrayList<>(joinSounds.keySet()
+                                .stream().filter(s -> s.toLowerCase().startsWith(c.args().get(0).toLowerCase()))
+                                .toList());
+                    }
+                    return List.of();
+                })
                 .handler(c -> {
                     Player player = c.sender();
                     if (!player.hasPermission("orleansmc.custom_join_sound")) {
@@ -86,7 +107,13 @@ public class CustomJoinCommands implements Listener {
                         return;
                     }
 
-                    Sound sound = Sound.valueOf(c.args().get(0).toUpperCase());
+                    String soundName = c.args().stream().reduce((s1, s2) -> s1 + " " + s2).orElse("minecraft:block.note_block.pling");
+                    String soundValue = joinSounds.get(soundName);
+                    if (soundValue == null) {
+                        player.sendMessage("§cGeçersiz ses adı. Lütfen doğru bir ses adı girin.");
+                        return;
+                    }
+                    Sound sound = Sound.valueOf(soundValue);
                     if (playerModel.customLogin == null) {
                         playerModel.customLogin = new CustomLoginModel("sunucuya katıldı!", sound);
                     } else {

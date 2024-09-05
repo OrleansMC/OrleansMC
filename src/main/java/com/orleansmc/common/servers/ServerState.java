@@ -11,15 +11,17 @@ public class ServerState {
     public final String ip;
     public final int port;
     public final int tps;
+    public final long time;
     public final List<String> players = new ArrayList<>();
 
-    public ServerState(String name, String type, String ip, int port, int tps, List<String> players) {
+    public ServerState(String name, String type, String ip, int port, int tps, List<String> players, long time) {
         this.lastUpdate = new Date();
         this.name = name;
         this.type = type;
         this.ip = ip;
         this.port = port;
         this.tps = tps;
+        this.time = time;
         this.players.addAll(players);
     }
 }

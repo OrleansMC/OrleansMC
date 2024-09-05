@@ -6,6 +6,7 @@ import com.orleansmc.common.Util;
 import com.orleansmc.common.redis.RedisManager;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.Bukkit;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -79,7 +80,8 @@ public class ServersManager implements ServersProvider {
                 Settings.SERVER_IP,
                 org.bukkit.Bukkit.getPort(),
                 org.bukkit.Bukkit.getServer().getTPS()[0] > 20 ? 20 : (int) Math.round(org.bukkit.Bukkit.getServer().getTPS()[0]),
-                new ArrayList<>(org.bukkit.Bukkit.getOnlinePlayers().stream().map(org.bukkit.entity.Player::getName).collect(Collectors.toList()))
+                new ArrayList<>(org.bukkit.Bukkit.getOnlinePlayers().stream().map(org.bukkit.entity.Player::getName).collect(Collectors.toList())),
+                Bukkit.getServer().getWorlds().getFirst().getTime()
         );
 
         redisManager.sendMessage(CHANNEL_NAME, new Gson().toJson(serverState));

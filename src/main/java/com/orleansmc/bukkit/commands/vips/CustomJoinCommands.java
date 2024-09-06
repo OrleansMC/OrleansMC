@@ -69,21 +69,20 @@ public class CustomJoinCommands implements Listener {
                 }
         );
 
-        HashMap<String, String> joinSounds = new HashMap<>();
-        joinSounds.put("Mızrak Sesi", "minecraft:item.trident.thunder");
-        joinSounds.put("Kötü Şans Sesi", "minecraft:event.mob_effect.bad_omen");
-        joinSounds.put("Baskın Sesi", "minecraft:event.mob_effect.raid_omen");
-        joinSounds.put("Kılıç Sesi", "minecraft:tugkandeman.ent_slash3");
-        joinSounds.put("Amethyst Bloğu Sesi", "minecraft:block.amethyst_block.fall");
-        joinSounds.put("Örs Düşüşü Sesi", "minecraft:block.anvil.land");
-        joinSounds.put("Kasa Açılış Sesi", "minecraft:block.vault.open_shutter");
-        joinSounds.put("Uğursuz Eşya Sesi", "minecraft:block.trial_spawner.about_to_spawn_item");
-        joinSounds.put("Kehanet Çağrısı Sesi", "minecraft:block.trial_spawner.charge_activate");
-        joinSounds.put("End Portalı Sesi", "minecraft:block.end_portal.spawn");
-        joinSounds.put("Ender Gözü Sesi", "minecraft:block.end_portal_frame.fill");
-        joinSounds.put("Dirilme Sesi", "minecraft:block.respawn_anchor.charge");
-        joinSounds.put("Diriliş Sesi", "minecraft:block.respawn_anchor.set_spawn");
-        joinSounds.put("Diriliş Bitiş Sesi", "minecraft:block.respawn_anchor.deplete");
+        HashMap<String, Sound> joinSounds = new HashMap<>();
+        joinSounds.put("Mızrak Sesi", Sound.ITEM_TRIDENT_THUNDER);
+        joinSounds.put("Kötü Şans Sesi", Sound.EVENT_MOB_EFFECT_BAD_OMEN);
+        joinSounds.put("Baskın Sesi", Sound.EVENT_MOB_EFFECT_RAID_OMEN);
+        joinSounds.put("Amethyst Bloğu Sesi", Sound.BLOCK_AMETHYST_BLOCK_FALL);
+        joinSounds.put("Örs Düşüşü Sesi", Sound.BLOCK_ANVIL_LAND);
+        joinSounds.put("Kasa Açılış Sesi", Sound.BLOCK_VAULT_OPEN_SHUTTER);
+        joinSounds.put("Uğursuz Eşya Sesi", Sound.BLOCK_TRIAL_SPAWNER_ABOUT_TO_SPAWN_ITEM);
+        joinSounds.put("Kehanet Çağrısı Sesi", Sound.BLOCK_TRIAL_SPAWNER_CHARGE_ACTIVATE);
+        joinSounds.put("End Portalı Sesi", Sound.BLOCK_END_PORTAL_SPAWN);
+        joinSounds.put("Ender Gözü Sesi", Sound.BLOCK_END_PORTAL_FRAME_FILL);
+        joinSounds.put("Dirilme Sesi", Sound.BLOCK_RESPAWN_ANCHOR_CHARGE);
+        joinSounds.put("Diriliş Sesi", Sound.BLOCK_RESPAWN_ANCHOR_SET_SPAWN);
+        joinSounds.put("Diriliş Bitiş Sesi", Sound.BLOCK_RESPAWN_ANCHOR_DEPLETE);
 
         Commands.create()
                 .assertPlayer()
@@ -97,6 +96,7 @@ public class CustomJoinCommands implements Listener {
                 })
                 .handler(c -> {
                     Player player = c.sender();
+
                     if (!player.hasPermission("orleansmc.custom_join_sound")) {
                         player.sendMessage("§cBu komutu kullanmak için VIP olmalısınız.");
                         return;
@@ -107,19 +107,19 @@ public class CustomJoinCommands implements Listener {
                         return;
                     }
 
-                    String soundName = c.args().stream().reduce((s1, s2) -> s1 + " " + s2).orElse("minecraft:block.note_block.pling");
-                    String soundValue = joinSounds.get(soundName);
-                    if (soundValue == null) {
+                    String soundName = c.args().stream().reduce((s1, s2) -> s1 + " " + s2).orElse("block.note_block.pling");
+                    Sound sound = joinSounds.get(soundName);
+                    if (sound == null) {
                         player.sendMessage("§cGeçersiz ses adı. Lütfen doğru bir ses adı girin.");
                         return;
                     }
-                    Sound sound = Sound.valueOf(soundValue);
                     if (playerModel.customLogin == null) {
                         playerModel.customLogin = new CustomLoginModel("sunucuya katıldı!", sound);
                     } else {
                         playerModel.customLogin.customLoginSound = sound;
                     }
                     plugin.playersManager.savePlayer(playerModel);
+                    player.playSound(player.getLocation(), sound, 1, 1);
                     player.sendMessage("§aGiriş sesiniz başarıyla güncellendi.");
                 })
                 .register("join-sound", "giriş-sesi");

@@ -9,7 +9,7 @@ permissions:
   orleansmc.admin:
     description: Admin yetkisi
     default: op
-  "orleansmc.cutom_join_sound":
+  "orleansmc.custom_join_sound":
     description: Giriş sesi
     default: op
   "orleansmc.custom_join_message":

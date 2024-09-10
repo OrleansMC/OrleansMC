@@ -163,6 +163,34 @@ public class RedisManager implements RedisProvider {
         }
     }
 
+    @Override
+    public void setex(String key, int seconds, String value) {
+        try (Jedis jedis = getJedis()) {
+            jedis.setex(key, seconds, value);
+        }
+    }
+
+    @Override
+    public long ttl(String key) {
+        try (Jedis jedis = getJedis()) {
+            return jedis.ttl(key);
+        }
+    }
+
+    @Override
+    public void expire(String key, int seconds) {
+        try (Jedis jedis = getJedis()) {
+            jedis.expire(key, seconds);
+        }
+    }
+
+    @Override
+    public boolean exists(String key) {
+        try (Jedis jedis = getJedis()) {
+            return jedis.exists(key);
+        }
+    }
+
     private final class PubSubListener extends BinaryJedisPubSub {
         @Override
         public void onUnsubscribe(byte[] channel, int subscribedChannels) {

@@ -29,8 +29,10 @@ public class TeleportManager implements TeleportProvider {
     public ServerState getAvailableSpawn() {
         return plugin.serversManager.getAvailableServerByType(ServerType.REALMS_SPAWN);
     }
-
     public void teleportPlayer(Player player, Location location, String worldName, String serverName) {
+        teleportPlayer(player, location, worldName, serverName, false);
+    }
+    public void teleportPlayer(Player player, Location location, String worldName, String serverName, boolean force) {
         OnlineUser onlineUser = huskHomesAPI.adaptUser(player);
 
         if (Objects.equals(serverName, Settings.SERVER_NAME)) {
@@ -53,7 +55,7 @@ public class TeleportManager implements TeleportProvider {
 
         Position position = Position.at(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch(), World.from(worldName, UUID.randomUUID()), serverState.name);
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-            huskHomesAPI.teleportBuilder().teleporter(onlineUser).target(position).buildAndComplete(true);
+            huskHomesAPI.teleportBuilder().teleporter(onlineUser).target(position).buildAndComplete(!force);
         });
     }
 }

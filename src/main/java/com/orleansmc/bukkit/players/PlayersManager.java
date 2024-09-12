@@ -60,6 +60,13 @@ public class PlayersManager implements PlayersProvider {
         return null;
     }
 
+
+    public PlayerModel fetchPlayer(String name) {
+        return PlayerModel.fromDocument(
+                playersCollection.find(new Document("_id", name.toLowerCase())).first()
+        );
+    }
+
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();

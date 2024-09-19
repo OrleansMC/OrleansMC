@@ -16,13 +16,14 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
 public class PlayersManager implements PlayersProvider {
     private final OrleansMC plugin;
     @Getter
-    private final ArrayList<PlayerModel> players = new ArrayList<>();
+    private final HashMap<String, PlayerModel> players = new HashMap<>();
     private final MongoCollection<Document> playersCollection;
 
     public PlayersManager(OrleansMC plugin) {
@@ -47,15 +48,14 @@ public class PlayersManager implements PlayersProvider {
         playersCollection.find(
                 new Document("_id", new Document("$regex", mongoFindRegex.toString()).append("$options", "i")) // "i" seçeneği büyük/küçük harf duyarsızlık sağlar
         ).forEach((Block<? super Document>) document -> {
-            players.add(PlayerModel.fromDocument(document));
+            PlayerModel playerModel = PlayerModel.fromDocument(document);
+            players.put(playerModel.name, playerModel);
         });
     }
 
     public PlayerModel getPlayer(String name) {
-        for (PlayerModel player : players) {
-            if (player.name.equalsIgnoreCase(name)) {
-                return player;
-            }
+        if (players.containsKey(name)) {
+            return players.get(name);
         }
         return null;
     }
@@ -85,7 +85,7 @@ public class PlayersManager implements PlayersProvider {
             } else {
                 playerModel = PlayerModel.fromDocument(dbPlayer);
             }
-            players.add(playerModel);
+            players.put(playerModel.name, playerModel);
             plugin.getLogger().info("Player " + player.getName() + " joined and player model has been cached.");
         });
     }
@@ -95,7 +95,7 @@ public class PlayersManager implements PlayersProvider {
         Player player = event.getPlayer();
         PlayerModel playerModel = getPlayer(player.getName());
         if (playerModel != null) {
-            players.remove(playerModel);
+            players.remove(playerModel.name);
             plugin.getLogger().info("Player " + player.getName() + " quit and player model has been removed from cache.");
         }
     }

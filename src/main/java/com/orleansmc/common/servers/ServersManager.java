@@ -102,6 +102,10 @@ public class ServersManager implements ServersProvider {
         }
     }
 
+    public ServerState getCurrentServer() {
+        return this.getServerStates().get(Settings.SERVER_NAME);
+    }
+
     public ServerState getAnyServer() {
         return this.getServerStates().values().stream().min(Comparator.comparing(serverState -> serverState.name)).orElse(null);
     }

@@ -171,6 +171,13 @@ public class CustomJoinCommands implements Listener {
             if (player.hasPermission("orleansmc.join_notification")) {
                 sendWelcomeMessage(player, plugin);
             }
+            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 0.5F, 1);
+            player.sendMessage(
+                    Util.getComponent("<color:#f0f01c><bold>OrleansMC</bold> sunucusuna hoş geldin!</color>")
+                            .append(Util.getComponent("<newline><color:#ff5999><bold>Discord</bold> sunucumuz: </color><click:open_url:'https://discord.gg/7vzQ8vZ'><underlined><color:#7d8aff>https://discord.gg/orleansmc</color></underlined></click>"))
+                            .append(Util.getComponent("<newline><color:#ff5999><bold>Web</bold> sitemiz: </color><click:open_url:'https://orleansmc.com'><underlined><color:#7d8aff>https://orleansmc.com</color></underlined></click>"))
+            );
+
         }).bindWith(plugin);
     }
 

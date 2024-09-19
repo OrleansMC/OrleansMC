@@ -4,4 +4,5 @@ cp build/libs/*.jar ../OrleansRealms/lib/
 cp build/libs/*.jar ../OrleansShops/lib/
 cp build/libs/*.jar ../OrleansInteractions/lib/
 cp build/libs/*.jar ../OrleansCommands/lib/
+cp build/libs/*.jar ../OrleansWands/lib/
 echo "Done"

@@ -142,7 +142,7 @@ public class OrleansMC {
                         Util.getComponent(
                                 "<bold><gradient:#00ffcc:#00ccff>Sunucu yeniden başlatılıyor!</gradient></bold>\n\n" +
                                         "<color:#b066ff>Lütfen birkaç dakika içerisinde tekrar deneyin.</color>\n\n" +
-                                        "<hover:show_text:'Destek için tıkla!'><click:open_url:'https://discord.gg/orleansmc'><color:#7289da>Destek İçin: <u>discord.gg/orleansmc</u></color></click></hover>"
+                                        "<hover:show_text:'Destek için tıkla!'><click:open_url:'https://discord.gg/orleans'><color:#7289da>Destek İçin: <u>discord.gg/orleansmc</u></color></click></hover>"
                         )
                 );
                 return;

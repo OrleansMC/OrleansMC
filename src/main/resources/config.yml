@@ -1,0 +1,25 @@
+# === Proxy Configuration ===
+# Set to true only if the plugins directory is for Velocity plugins.
+proxy: false
+
+# === Server Identity ===
+# These fields identify this server instance.
+server-name: "my-server-name"       # The unique name of this server instance.
+server-type: "my-server-type"       # The type of the server. Must match one of the values in the ServerType enum (e.g., "REALMS_SPAWN", "REALMS", "REALMS_OUTLAND").
+server-ip: "192.168.1.10"           # The server's internal or external IP address.
+
+# === Redis Configuration ===
+# Redis is used for caching and communication between servers.
+redis-host: "redis"                 # Redis hostname or IP address.
+redis-port: 6379                    # Redis port (default is 6379).
+redis-password: ""                  # Leave empty if no password is required for Redis.
+
+# === Server Health ===
+# Configuration for monitoring the server's health and state.
+server-state-interval: 1            # How often (in seconds) the server reports its state to the system.
+server-state-timeout: 3             # How many seconds to wait before considering the server as offline.
+
+# === Discord Webhooks ===
+# Webhook URLs for sending notifications to Discord.
+in-out-webhook-url: "https://discord.com/api/webhooks/..."     # Webhook for player join/leave events.
+actions-webhook-url: "https://discord.com/api/webhooks/..."    # Webhook for actions executed by the server.

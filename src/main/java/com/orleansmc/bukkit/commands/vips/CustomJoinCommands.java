@@ -77,7 +77,6 @@ public class CustomJoinCommands implements Listener {
         joinSounds.put("Örs Düşüşü Sesi", Sound.BLOCK_ANVIL_LAND);
         joinSounds.put("Kasa Açılış Sesi", Sound.BLOCK_VAULT_OPEN_SHUTTER);
         joinSounds.put("Uğursuz Eşya Sesi", Sound.BLOCK_TRIAL_SPAWNER_ABOUT_TO_SPAWN_ITEM);
-        joinSounds.put("Kehanet Çağrısı Sesi", Sound.BLOCK_TRIAL_SPAWNER_CHARGE_ACTIVATE);
         joinSounds.put("End Portalı Sesi", Sound.BLOCK_END_PORTAL_SPAWN);
         joinSounds.put("Ender Gözü Sesi", Sound.BLOCK_END_PORTAL_FRAME_FILL);
         joinSounds.put("Dirilme Sesi", Sound.BLOCK_RESPAWN_ANCHOR_CHARGE);

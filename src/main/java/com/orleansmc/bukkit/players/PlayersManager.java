@@ -62,29 +62,28 @@ public class PlayersManager implements PlayersProvider {
 
 
     public PlayerModel fetchPlayer(String name) {
-        return PlayerModel.fromDocument(
-                playersCollection.find(new Document("_id", name.toLowerCase())).first()
-        );
+        Document document = playersCollection.find(new Document("_id", name.toLowerCase())).first();
+        if (document == null) {
+            final PlayerModel playerModel = new PlayerModel(
+                    name,
+                    Bukkit.getOfflinePlayer(name).getUniqueId().toString(),
+                    0,
+                    new ArrayList<>(),
+                    new ArrayList<>(),
+                    null,
+                    null
+            );
+            savePlayer(playerModel);
+            return playerModel;
+        }
+        return PlayerModel.fromDocument(document);
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-            PlayerModel playerModel;
-            var dbPlayer = playersCollection.find(new Document("_id", player.getName().toLowerCase())).first();
-            if (dbPlayer == null) {
-                playerModel = new PlayerModel(
-                        player.getName(),
-                        player.getUniqueId().toString(),
-                        0,
-                        new ArrayList<>(),
-                        new ArrayList<>(),
-                        null
-                );
-            } else {
-                playerModel = PlayerModel.fromDocument(dbPlayer);
-            }
+            PlayerModel playerModel = fetchPlayer(player.getName());
             players.put(playerModel.name, playerModel);
             plugin.getLogger().info("Player " + player.getName() + " joined and player model has been cached.");
         });

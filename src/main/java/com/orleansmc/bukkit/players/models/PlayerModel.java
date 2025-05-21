@@ -10,6 +10,7 @@ public class PlayerModel {
     public final String name;
     public final String uuid;
     public int totalDeletedRealms = 0;
+    public final PlayerInviteModel invites;
     public final List<PlayerAlertModel> alerts;
     public List<RecentDeathModel> recentDeaths;
     @Nullable
@@ -21,7 +22,8 @@ public class PlayerModel {
             int totalDeletedRealms,
             ArrayList<PlayerAlertModel> alerts,
             ArrayList<RecentDeathModel> recentDeaths,
-            @Nullable CustomLoginModel customLogin
+            @Nullable CustomLoginModel customLogin,
+            @Nullable PlayerInviteModel invites
     ) {
         this.name = name;
         this.uuid = uuid;
@@ -29,6 +31,7 @@ public class PlayerModel {
         this.totalDeletedRealms = totalDeletedRealms;
         this.customLogin = customLogin;
         this.recentDeaths = recentDeaths;
+        this.invites = invites != null ? invites : new PlayerInviteModel(null, new ArrayList<>());
     }
 
     public Document toDocument() {
@@ -39,6 +42,7 @@ public class PlayerModel {
         document.put("name", name);
         document.put("uuid", uuid);
         document.put("total_deleted_realms", totalDeletedRealms);
+        document.put("invites", invites.toDocument());
         document.put("alerts", alerts.stream().map(PlayerAlertModel::toDocument).toList());
         document.put("custom_login", customLogin != null ? customLogin.toDocument() : null);
         document.put("recent_deaths", recentDeaths.stream().map(RecentDeathModel::toDocument).toList());
@@ -46,6 +50,9 @@ public class PlayerModel {
     }
 
     public static PlayerModel fromDocument(Document document) {
+        if (document == null) {
+            return null;
+        }
         ArrayList<PlayerAlertModel> alerts = new ArrayList<>();
         for (Object o : (List<?>) document.getOrDefault("alerts", new ArrayList<>())) {
             alerts.add(PlayerAlertModel.fromDocument((Document) o));
@@ -62,7 +69,8 @@ public class PlayerModel {
                 document.getInteger("total_deleted_realms"),
                 alerts,
                 recentDeathModels,
-                CustomLoginModel.fromDocument((Document) document.getOrDefault("custom_login", null))
+                CustomLoginModel.fromDocument((Document) document.getOrDefault("custom_login", null)),
+                PlayerInviteModel.fromDocument((Document) document.getOrDefault("invites", null))
         );
     }
 }
